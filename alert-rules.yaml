@@ -1,0 +1,17 @@
+groups:
+  - name: service-critical
+    rules:
+      - alert: ServiceDown
+        expr: up == 0
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Service down"
+      - alert: HighErrorRate
+        expr: increase(http_requests_total{http_status=~"5.."}[5m]) / increase(http_requests_total[5m]) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High error rate"
